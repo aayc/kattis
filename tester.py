@@ -14,18 +14,31 @@ def test_solution(solution):
     for subdir, _, files in os.walk("."):
         for fname in files:
             if fname == solution:
-                with open(subdir + "/input.txt", "r") as f:
-                    testcases = f.read()
+                passes = 0
+                n_tests = 0
+                i = 1
 
-                with open(subdir + "/output.txt", "r") as f:
-                    expected = f.read()
+                while os.path.exists(f"{subdir}/input{i}.txt"):
+                    with open(f"{subdir}/input{i}.txt", "r") as f:
+                        testcases = f.read()
 
-                process = subprocess.Popen(["python3", subdir + "/" + fname], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-                output = process.communicate(input=str.encode(testcases))[0].decode('ASCII')
+                    with open(f"{subdir}/output{i}.txt", "r") as f:
+                        expected = f.read()
 
-                print("expected:\n" + expected)
-                print("output:\n" + output)
-                print("TEST RESULT: ", "PASS" if expected == output else "FAIL")
+                    process = subprocess.Popen(["python3", subdir + "/" + fname], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+                    output = process.communicate(input=str.encode(testcases))[0].decode('ASCII')
+                    success = expected == output
+
+                    print("expected:\n" + expected)
+                    print("output:\n" + output)
+                    print("TEST RESULT: ", "PASS" if success else "FAIL")
+
+                    passes += 1 if success else 0
+                    n_tests += 1
+                    i += 1
+
+                print(f"TEST RESULTS: {passes}/{n_tests}")
+
 
                 return
 
