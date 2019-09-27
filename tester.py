@@ -1,18 +1,19 @@
-import sys
 import argparse
 import os
 import subprocess
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Tester for Kattis solutions")
-    parser.add_argument("solution", type=str, help="Python solution file")
+def test_solution(solution):
+    """Test solution file using input.txt output.txt
 
-    args = parser.parse_args()
+    Arguments:
 
-    for subdir, dirs, files in os.walk("."):
+    solution : solution base file name
+
+    TODO allow multiple input files
+    """
+    for subdir, _, files in os.walk("."):
         for fname in files:
-            if fname == args.solution:
-                print("FOUND SOLUTION FILE.  Beginning test...")
+            if fname == solution:
                 with open(subdir + "/input.txt", "r") as f:
                     testcases = f.read()
 
@@ -22,6 +23,16 @@ if __name__ == "__main__":
                 process = subprocess.Popen(["python3", subdir + "/" + fname], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
                 output = process.communicate(input=str.encode(testcases))[0].decode('ASCII')
 
-                print("expected:|" + expected + "|")
-                print("output:|" + output + "|")
+                print("expected:\n" + expected)
+                print("output:\n" + output)
                 print("TEST RESULT: ", "PASS" if expected == output else "FAIL")
+
+                return
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Tester for Kattis solutions")
+    parser.add_argument("solution", type=str, help="Python solution file")
+
+    args = parser.parse_args()
+    test_solution(args.solution)
