@@ -9,7 +9,6 @@ def test_solution(solution):
 
     solution : solution base file name
 
-    TODO allow multiple input files
     """
     for subdir, _, files in os.walk("."):
         for fname in files:
@@ -38,8 +37,6 @@ def test_solution(solution):
                     i += 1
 
                 print(f"TEST RESULTS: {passes}/{n_tests}")
-
-
                 return
 
 
