@@ -1,5 +1,5 @@
 from collections import deque
-# Ugh too slow, need to use union find disjoint
+
 
 def solution(a, b, y, z):
     q = deque([(a, b)])
@@ -18,10 +18,16 @@ def solution(a, b, y, z):
 
     return False
 
+def dfs(r, c, V):
+
+
 R, C = [int(x) for x in input().split(" ")]
 M = []
 for i in range(R):
     M.append(list(input()))
+
+L = []
+
 
 T = int(input())
 for t in range(T):
