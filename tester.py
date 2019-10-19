@@ -2,7 +2,7 @@ import argparse
 import os
 import subprocess
 
-def test_solution(solution):
+def test_solution(solution, stop = None):
     """Test solution file using input.txt output.txt
 
     Arguments:
@@ -34,7 +34,11 @@ def test_solution(solution):
 
                     passes += 1 if success else 0
                     n_tests += 1
+                    
+                    if stop is not None and stop == i:
+                        break
                     i += 1
+
 
                 print(f"TEST RESULTS: {passes}/{n_tests}")
                 return
@@ -43,6 +47,7 @@ def test_solution(solution):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Tester for Kattis solutions")
     parser.add_argument("solution", type=str, help="Python solution file")
+    parser.add_argument("--stop", type=int)
 
     args = parser.parse_args()
-    test_solution(args.solution)
+    test_solution(args.solution, stop = args.stop)
