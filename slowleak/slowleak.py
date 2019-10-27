@@ -1,9 +1,10 @@
 from heapq import heappop, heappush
 import sys
+L = sys.stdin.readlines()
 
 oo = float("inf")
-N, M, T, start_air = [int(x) for x in input().split(" ")]
-rest_stops = set([int(x) - 1 for x in input().split(" ")])
+N, M, T, start_air = [int(x) for x in L[0].split(" ")]
+rest_stops = set([int(x) - 1 for x in L[1].split(" ")])
 
 
 class Node:
@@ -14,8 +15,9 @@ class Node:
         self.neighbors.append((neighbor, w))
 
 nodes = [Node() for i in range(N)]
+L = L[2:]
 for i in range(M):
-    f, t, d = [int(x) for x in sys.stdin.readline().split(" ")]
+    f, t, d = [int(x) for x in L[i].split(" ")]
     nodes[f - 1].add_neighbor(t - 1, d)
     nodes[t - 1].add_neighbor(f - 1, d)
 
