@@ -1,39 +1,37 @@
 from collections import deque
+import sys
 
 
-def solution(a, b, y, z):
-    q = deque([(a, b)])
-    V = set()
-    while q:
-        r, c = q.popleft()
-        if r == y and c == z:
-            return True
+def dfs(r, c, i, prev):
+    if 0 <= r < len(M) and 0 <= c < len(M[0]) \
+            and M[r][c] == prev and V[r][c] is None:
+        V[r][c] = i
+        dfs(r + 1, c, i, prev)
+        dfs(r, c + 1, i, prev)
+        dfs(r - 1, c, i, prev)
+        dfs(r, c - 1, i, prev)
 
-        neighbors = [(r - 1, c), (r, c - 1), (r + 1, c), (r, c + 1)]
-        for neighbor in neighbors:
-            nr, nc = neighbor
-            if 0 <= nr < len(M) and 0 <= nc < len(M[0]) and (nr, nc) not in V and M[nr][nc] == M[r][c]:
-                V.add((nr, nc))
-                q.append((nr, nc))
+L = sys.stdin.readlines()
+R, C = [int(x) for x in L[0].split(" ")]
+M = [list(i.strip()) for i in L[1:R + 1]]
+V = [[None for j in range(C)] for i in range(R)]
+#print(len(M), len(M[0]),  len(V), len(V[0]))
 
-    return False
+i = 0
+for r in range(len(M)):
+    for c in range(len(M[r])):
+        if V[r][c] is None:
+            dfs(r, c, i, M[r][c])
+            i += 1
+#for v in V:
+#    print(*v)
+T = int(L[R + 1])
+L = L[R + 2:]
 
-def dfs(r, c, V):
-
-
-R, C = [int(x) for x in input().split(" ")]
-M = []
-for i in range(R):
-    M.append(list(input()))
-
-L = []
-
-
-T = int(input())
 for t in range(T):
-    a, b, c, d = [int(x) for x in input().split(" ")]
-    user = "decimal" if M[a - 1][b - 1] == '1' else "binary"
-    if solution(a - 1, b - 1, c - 1, d - 1):
+    a, b, c, d = [int(x) - 1 for x in L[t].strip().split(" ")]
+    user = "decimal" if M[a][b] == '1' else "binary"
+    if V[a][b] == V[c][d]:
         print(user)
     else:
         print("neither")
