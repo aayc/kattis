@@ -1,0 +1,3 @@
+import math
+N = int(input())
+print(math.ceil(math.log(N, 2)) + 1)
